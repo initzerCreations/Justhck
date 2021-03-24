@@ -82,6 +82,23 @@ if(results.scan):
 		#f.write(stream.read(100000))
 		#f.close()
 		print(bcolors.OKGREEN + "[Justhck] Scan succesfully saved on ./" + str(results.machine_name) + "/recon/nmap_report.xml" + bcolors.ENDC)
+		with open ('./' + str(results.machine_name) + '/recon/nmap_report.xml', 'rt') as file: #ElementTree module is opening the XML file
+    			tree = ElementTree.parse(file)
+		#Lists in order to store Additional information, Product and version next to the port information.
+		list_product=[]
+		list_version=[]
+		list_extrainf=[]
+		for node in tree.iter('service'):
+			product = node.attrib.get('product')
+			version = node.attrib.get('version')
+			extrainf = node.attrib.get('extrainfo')
+			list_product.append(product)
+			list_version.append(version)
+			list_extrainf.append(extrainf)
+		
+		for i in range(0, len(list_product)):
+			if not(list_product[i] == None or list_version[i] == None or list_extrainf[i] == None ):
+				print(bcolors.OKGREEN + "Service name: "+ list_product[i] + " " + list_version[i] +" | Extra info:" + list_extrainf[i] + bcolors.ENDC)
 	else:
 		print(bcolors.OKGREEN + "[Justhck] Skipping... The scan was already performed..." + bcolors.ENDC)
 		print(bcolors.OKBLUE + "[Justhck] Services detected on the machine:")
@@ -101,7 +118,7 @@ if(results.scan):
 			list_extrainf.append(extrainf)
 		
 		for i in range(0, len(list_product)):
-			if not(list_product[i] == None):
+			if not(list_product[i] == None or list_version[i] == None or list_extrainf[i] == None ):
 				print(bcolors.OKGREEN + "Service name: "+ list_product[i] + " " + list_version[i] +" | Extra info:" + list_extrainf[i] + bcolors.ENDC)
 		
 if(results.search_exploit):
