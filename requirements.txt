@@ -1,0 +1,4 @@
+termcolor==1.1.0
+python_libnmap==0.7.2
+pyfiglet==0.8.post1
+colorama==0.4.4
